@@ -9,11 +9,13 @@ pygame.init()
 screen = pygame.display.set_mode(screen_size)
 pygame.display.set_caption('Runner')
 clock = pygame.time.Clock()
-test_font = pygame.font.Font('font/pixeltype.ttf', font_size)
+font = pygame.font.Font('font/pixeltype.ttf', font_size)
 
-sky_surface = pygame.image.load('graphics/sky.png').convert()
-ground_surface = pygame.image.load('graphics/ground.png').convert()
-text_surface = test_font.render('My game', False, 'Black')
+sky_surf = pygame.image.load('graphics/sky.png').convert()
+ground_surf = pygame.image.load('graphics/ground.png').convert()
+
+score_surf = font.render('My game', False, 'Black')
+score_rect = score_surf.get_rect(midtop = (400, 50))
 
 snail_surf = pygame.image.load('graphics/snail/snail1.png').convert_alpha()
 snail_rect = snail_surf.get_rect(bottomright = (600, 300))
@@ -27,12 +29,13 @@ while True:
             pygame.quit()
             exit()
 
-    screen.blit(sky_surface, (0, 0))
-    screen.blit(ground_surface, (0, 300))
-    screen.blit(text_surface, (300, 50))
-    screen.blit(snail_surf, snail_rect)
-    screen.blit(player_surf, player_rect)
+    screen.blit(sky_surf, (0, 0))
+    screen.blit(ground_surf, (0, 300))
+    screen.blit(score_surf, score_rect)
     snail_rect.x -= 4
     if snail_rect.right <= 0: snail_rect.left = 800
+    screen.blit(snail_surf, snail_rect)
+    screen.blit(player_surf, player_rect)
+
     pygame.display.update()
     clock.tick(fps)
