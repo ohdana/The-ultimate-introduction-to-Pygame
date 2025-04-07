@@ -11,10 +11,10 @@ pygame.display.set_caption('Runner')
 clock = pygame.time.Clock()
 test_font = pygame.font.Font('font/pixeltype.ttf', font_size)
 
-sky_surface = pygame.image.load('graphics/sky.png')
-ground_surface = pygame.image.load('graphics/ground.png')
+sky_surface = pygame.image.load('graphics/sky.png').convert()
+ground_surface = pygame.image.load('graphics/ground.png').convert()
 text_surface = test_font.render('My game', False, 'Black')
-snail_surface = pygame.image.load('graphics/snail/snail1.png')
+snail_surface = pygame.image.load('graphics/snail/snail1.png').convert_alpha()
 snail_x_pos = 600
 snail_speed = 4
 
