@@ -1,10 +1,11 @@
 import pygame
 from sys import exit
 
+screen_size = (800, 400)
+fps = 60
+
 pygame.init()
-canvas_width = 800
-canvas_height = 400
-screen = pygame.display.set_mode((canvas_width, canvas_height))
+screen = pygame.display.set_mode(screen_size)
 pygame.display.set_caption('Runner')
 clock = pygame.time.Clock()
 
@@ -21,4 +22,4 @@ while True:
     screen.blit(ground_surface, (0, sky_surface.get_height()))
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(fps)
