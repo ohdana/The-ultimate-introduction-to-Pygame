@@ -15,7 +15,7 @@ sky_surf = pygame.image.load('graphics/sky.png').convert()
 ground_surf = pygame.image.load('graphics/ground.png').convert()
 
 score_surf = font.render('My game', False, 'Black')
-score_rect = score_surf.get_rect(midtop = (400, 50))
+score_rect = score_surf.get_rect(center = (400, 50))
 
 snail_surf = pygame.image.load('graphics/snail/snail1.png').convert_alpha()
 snail_rect = snail_surf.get_rect(bottomright = (600, 300))
