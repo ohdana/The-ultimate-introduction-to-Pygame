@@ -4,6 +4,7 @@ from sys import exit
 screen_size = (800, 400)
 font_size = 50
 fps = 60
+game_active = True
 
 pygame.init()
 screen = pygame.display.set_mode(screen_size)
@@ -29,32 +30,43 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        
+        if game_active:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if player_rect.collidepoint(event.pos):
+                    if player_rect.bottom == 300:
+                        player_gravity = -20
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if player_rect.collidepoint(event.pos):
-                if player_rect.bottom == 300:
-                    player_gravity = -20
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    if player_rect.bottom == 300:
+                        player_gravity = -20
+        else:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    game_active = True
+                    snail_rect.left = 800
+    if game_active:
+        screen.blit(sky_surf, (0, 0))
+        screen.blit(ground_surf, (0, 300))
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE: 
-                if player_rect.bottom == 300:
-                    player_gravity = -20
+        pygame.draw.rect(screen, '#c0e8ec', score_rect)  
+        pygame.draw.rect(screen, '#c0e8ec', score_rect, 10)
 
-    screen.blit(sky_surf, (0, 0))
-    screen.blit(ground_surf, (0, 300))
+        screen.blit(score_surf, score_rect)
+        snail_rect.x -= 4
+        if snail_rect.right <= 0: snail_rect.left = 800
+        screen.blit(snail_surf, snail_rect)
 
-    pygame.draw.rect(screen, '#c0e8ec', score_rect)  
-    pygame.draw.rect(screen, '#c0e8ec', score_rect, 10)
+        player_gravity += 1
+        player_rect.y += player_gravity
+        if player_rect.bottom >= 300: player_rect.bottom = 300
+        screen.blit(player_surf, player_rect)
 
-    screen.blit(score_surf, score_rect)
-    snail_rect.x -= 4
-    if snail_rect.right <= 0: snail_rect.left = 800
-    screen.blit(snail_surf, snail_rect)
-
-    player_gravity += 1
-    player_rect.y += player_gravity
-    if player_rect.bottom >= 300: player_rect.bottom = 300
-    screen.blit(player_surf, player_rect)
+        if snail_rect.colliderect(player_rect):
+            game_active = False
+    else:
+        screen.fill('Yellow')
 
     pygame.display.update()
     clock.tick(fps)
