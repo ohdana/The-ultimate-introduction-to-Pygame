@@ -13,8 +13,9 @@ def obstacle_movement(obstacle_list):
     if obstacle_list:
         for obstacle_rect in obstacle_list:
             obstacle_rect.x -= 5
-
-            screen.blit(snail_surf, obstacle_rect)
+            
+            if obstacle_rect.bottom == 300: screen.blit(snail_surf, obstacle_rect)
+            else: screen.blit(fly_surf, obstacle_rect)
 
         obstacle_list = [obstacle for obstacle in obstacle_list if obstacle.x > -100]
         
@@ -38,7 +39,7 @@ sky_surf = pygame.image.load('graphics/sky.png').convert()
 ground_surf = pygame.image.load('graphics/ground.png').convert()
 
 snail_surf = pygame.image.load('graphics/snail/snail1.png').convert_alpha()
-snail_rect = snail_surf.get_rect(bottomright = (600, 300))
+fly_surf = pygame.image.load('graphics/fly/fly1.png').convert_alpha()
 
 obstacle_rect_list = []
 
@@ -79,19 +80,16 @@ while True:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     game_active = True
-                    snail_rect.left = 800
                     start_time = pygame.time.get_ticks() // 1000
         if event.type == obstacle_timer and game_active:
-            obstacle_rect_list.append(snail_surf.get_rect(bottomright = (randint(900, 1100), 300)))
-
+            if randint(0, 2):
+                obstacle_rect_list.append(snail_surf.get_rect(bottomright = (randint(900, 1100), 300)))
+            else:
+                obstacle_rect_list.append(fly_surf.get_rect(bottomright = (randint(900, 1100), 210)))
     if game_active:
         screen.blit(sky_surf, (0, 0))
         screen.blit(ground_surf, (0, 300))
         score = display_score()
-
-        #snail_rect.x -= 4
-        #if snail_rect.right <= 0: snail_rect.left = 800
-        #screen.blit(snail_surf, snail_rect)
 
         player_gravity += 1
         player_rect.y += player_gravity
@@ -99,9 +97,6 @@ while True:
         screen.blit(player_surf, player_rect)
 
         obstacle_rect_list = obstacle_movement(obstacle_rect_list)
-
-        if snail_rect.colliderect(player_rect):
-            game_active = False
     else:
         screen.fill((94, 129, 162))
         screen.blit(title_surf, title_rect)
