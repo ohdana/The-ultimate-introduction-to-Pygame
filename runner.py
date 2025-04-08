@@ -22,6 +22,12 @@ def obstacle_movement(obstacle_list):
         return obstacle_list
     else: return []
 
+def collisions(player, obstacles):
+    if obstacles:
+        for obstacle_rect in obstacles:
+            if player.colliderect(obstacle_rect): return False
+    return True
+
 screen_size = (800, 400)
 font_size = 50
 fps = 60
@@ -97,10 +103,14 @@ while True:
         screen.blit(player_surf, player_rect)
 
         obstacle_rect_list = obstacle_movement(obstacle_rect_list)
+        game_active = collisions(player_rect, obstacle_rect_list)
     else:
         screen.fill((94, 129, 162))
         screen.blit(title_surf, title_rect)
         screen.blit(player_stand, player_stand_rect)
+        obstacle_rect_list.clear()
+        player_rect.midbottom = (80, 300)
+        player_gravity = 0
 
         score_message_surf = font.render(f'Your score: {score}', False, (111, 196, 169))
         score_message_rect = score_message_surf.get_rect(midbottom = (400, 350))
